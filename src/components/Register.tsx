@@ -14,11 +14,20 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
             }
             const email = target.email.value;
             const password = target.password.value;
+            const checkPassword = target.confirmPassword.value;
             const name = target.name.value;
             const phoneNumber = target.phoneNumber.value;
             const userType = target["user-type-radio"].value;
             if (password.length < 5) {
                 alert('Password is too short');
+            }
+
+            if (name.length <= 7) {
+                alert('Name should be at least 7 characters long');
+            }
+
+            if (checkPassword !== password) {
+                alert('Passwords do not match!')
             }
 
             setModalOpen(AuthModals.CLOSED)
@@ -42,7 +51,8 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                         type="email"
                         name="email"
                         id="email"
-                        placeholder="Email address"/>    
+                        placeholder="Email address"
+                        required />   
                 </div>
                 <div className="d-flex">
                     <i className="fa-solid fa-envelope bg-secondary"></i>
@@ -50,7 +60,8 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                         className="style-input"
                         name="name"
                         id="name"
-                        placeholder="Your name"/>
+                        placeholder="Your name"
+                        required />
                 </div>
                 <div className="d-flex">
                     <i className="fa-solid fa-envelope bg-secondary"></i>
@@ -58,7 +69,8 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                         className="style-input"
                         name="phoneNumber"
                         id="phoneNumber"
-                        placeholder="Phone Number"/> 
+                        placeholder="Phone Number"
+                        required /> 
                 </div>
                 <div className="d-flex">
                     <i className="fa-solid fa-envelope bg-secondary"></i>
@@ -67,7 +79,18 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                         name="password"
                         type="password"
                         id="password"
-                        placeholder="Password"/>                    
+                        placeholder="Password"
+                        required />                    
+                </div>
+                <div className="d-flex">
+                    <i className="fa-solid fa-envelope bg-secondary"></i>
+                    <input 
+                        className="style-input"
+                        name="confirmPassword"
+                        type="password"
+                        id="confirm-password"
+                        placeholder="Confirm password"
+                        required />                    
                 </div>
                 <span className="span-style mt-10">I want to register as:</span>
                 <div className="mt-10">
@@ -77,6 +100,7 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                     <input type="radio"
                         name="user-type-radio"
                         value={UserTypes.CLIENT}
+                        required 
                         />
                         <label className="label-style" htmlFor="restaurant-radio">
                         <i className="fa-regular fa-circle-user bg-secondary"></i> Restaurant
@@ -84,6 +108,7 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
                     <input type="radio"
                         name="user-type-radio"
                         value={UserTypes.RESTAURANT}
+                        required
                         />
                 </div>
                 <input className="btn-grad" type="submit" value="Register"/>

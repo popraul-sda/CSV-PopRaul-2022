@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
-import "./Modal.css";
 import ReactDOM from "react-dom";
-
+import "./Modal.css";
 
 const MODAL_STYLES: React.CSSProperties = {
     position: "fixed",
@@ -24,12 +23,12 @@ const OVERLAY_STYLE: React.CSSProperties = {
     zIndex: 1000,
 };
 
-const Modal = (props:{
+const Modal = (props: {
     isOpen: boolean;
     close: Function;
-    children: ReactNode; 
+    children: ReactNode;
 }): React.ReactPortal | null => {
-    if(props.isOpen) {
+    if (props.isOpen) {
         return ReactDOM.createPortal(
             <div>
                 <div
@@ -48,10 +47,10 @@ const Modal = (props:{
                 </div>
             </div>,
             document.getElementById("portal") as Element
-        )
+        );
     } else {
         return null;
     }
-}
+};
 
 export default Modal;

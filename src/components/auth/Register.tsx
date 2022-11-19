@@ -1,43 +1,48 @@
 import React, { FC, SyntheticEvent, Dispatch, SetStateAction } from "react";
 import { AuthModals } from "./types";
 import { UserTypes } from "./types";
+import './auth-styles.css';
+import { useUserAuth } from "../../contexts/AuthContext";
 
-const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
+const Register: FC<{ setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
     setModalOpen,
 }) => {
 
-    const onSubmit = async(e: SyntheticEvent) => {
-        try{
-            e.preventDefault;
+    const { signUp } = useUserAuth();
+
+    const onSubmit = async (e: SyntheticEvent) => {
+        try {
+            e.preventDefault();
             const target = e.target as typeof e.target & {
-                [key: string]: {value: string}; 
-            }
+                [key: string]: { value: string; };
+            };
+            console.log(target);
             const email = target.email.value;
             const password = target.password.value;
             const checkPassword = target.confirmPassword.value;
-            const name = target.name.value;
+            const name = target["name"].value;
             const phoneNumber = target.phoneNumber.value;
             const userType = target["user-type-radio"].value;
+            await signUp(email,password,phoneNumber,name,userType);
+            // Custom validation
             if (password.length < 5) {
                 alert('Password is too short');
+                return;
             }
-
             if (name.length <= 7) {
                 alert('Name should be at least 7 characters long');
             }
 
             if (checkPassword !== password) {
-                alert('Passwords do not match!')
+                alert('Passwords do not match!');
             }
-
-            setModalOpen(AuthModals.CLOSED)
-        }
-        catch(err){
+            setModalOpen(AuthModals.CLOSED);
+            alert('Registered succesfully');
+        } catch (err) {
             console.error(err);
             alert(err);
         }
-    }
-
+    };
     return (
         <div className="modal-well">
             <div className="h-inset">
@@ -46,76 +51,73 @@ const Register: FC<{setModalOpen: Dispatch<SetStateAction<AuthModals>>; }> = ({
             <form onSubmit={onSubmit} className="auth-form">
                 <div className="d-flex">
                     <i className="fa-solid fa-envelope bg-secondary"></i>
-                    <input 
+                    <input
                         className="style-input"
                         type="email"
                         name="email"
                         id="email"
-                        placeholder="Email address"
-                        required />   
+                        placeholder="Email address "
+                        required
+                    />
                 </div>
                 <div className="d-flex">
-                    <i className="fa-solid fa-envelope bg-secondary"></i>
-                    <input 
+                    <i className="fa-solid fa-user bg-secondary"></i>
+                    <input
                         className="style-input"
                         name="name"
                         id="name"
-                        placeholder="Your name"
-                        required />
+                        placeholder="Your Name"
+                        required
+                    />
                 </div>
                 <div className="d-flex">
-                    <i className="fa-solid fa-envelope bg-secondary"></i>
-                    <input 
+                    <i className="fa-solid fa-phone bg-secondary"></i>
+                    <input
                         className="style-input"
                         name="phoneNumber"
                         id="phoneNumber"
                         placeholder="Phone Number"
-                        required /> 
+                        required
+                    />
                 </div>
                 <div className="d-flex">
-                    <i className="fa-solid fa-envelope bg-secondary"></i>
-                    <input 
+                    <i className="fa-solid fa-lock bg-secondary"></i>
+                    <input
                         className="style-input"
-                        name="password"
                         type="password"
+                        name="password"
                         id="password"
                         placeholder="Password"
-                        required />                    
+                        required
+                    />
                 </div>
-                <div className="d-flex">
-                    <i className="fa-solid fa-envelope bg-secondary"></i>
-                    <input 
-                        className="style-input"
-                        name="confirmPassword"
-                        type="password"
-                        id="confirm-password"
-                        placeholder="Confirm password"
-                        required />                    
-                </div>
-                <span className="span-style mt-10">I want to register as:</span>
+                <span className="span-style mt-10">I want to register as a:</span>
                 <div className="mt-10">
+                    <input
+                        type="radio"
+                        name="user-type-radio"
+                        value={UserTypes.CLIENT}
+                        defaultChecked
+                        required
+                    />
                     <label className="label-style" htmlFor="client-radio">
                         <i className="fa-regular fa-circle-user bg-secondary"></i> Client
                     </label>
-                    <input type="radio"
-                        name="user-type-radio"
-                        value={UserTypes.CLIENT}
-                        required 
-                        />
-                        <label className="label-style" htmlFor="restaurant-radio">
-                        <i className="fa-regular fa-circle-user bg-secondary"></i> Restaurant
-                    </label>
-                    <input type="radio"
+                    <input
+                        type="radio"
                         name="user-type-radio"
                         value={UserTypes.RESTAURANT}
                         required
-                        />
+                    />
+                    <label className="label-style" htmlFor="restaurant-radio">
+                        <i className="fa-solid fa-utensils bg-secondary"></i> Restaurant
+                    </label>
                 </div>
-                <input className="btn-grad" type="submit" value="Register"/>
+                <input className="btn-grad" type="submit" value="Register" />
             </form>
             <div className="br"></div>
         </div>
     );
-}
+};
 
 export default Register;

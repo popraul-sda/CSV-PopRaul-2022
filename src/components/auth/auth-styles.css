@@ -12,3 +12,11 @@
 .auth-form input[type="submit"]:hover {
     cursor: pointer;
 }
+
+.toast {
+    top: 0px;
+    right: 0px;
+    left: 530px;
+    display: flex;
+    flex-direction: column;
+}
